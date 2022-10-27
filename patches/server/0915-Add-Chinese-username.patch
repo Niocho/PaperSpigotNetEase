@@ -1,0 +1,44 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Niocho <2012696284@qq.com>
+Date: Thu, 27 Oct 2022 21:08:33 +0800
+Subject: [PATCH] Add Chinese username
+
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
+index befcb501b4b1b6330bf3cd53e00e30b01efade6f..de65b3f30a72db2a7136478dbcd8739eb629a237 100644
+--- a/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerLoginPacketListenerImpl.java
+@@ -229,21 +229,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener
+ 
+     // Paper start - validate usernames
+     public static boolean validateUsername(String in) {
+-        if (in == null || in.isEmpty() || in.length() > 16) {
+-            return false;
+-        }
+-
+-        for (int i = 0, len = in.length(); i < len; ++i) {
+-            char c = in.charAt(i);
+-
+-            if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || (c == '_' || c == '.')) {
+-                continue;
+-            }
+-
+-            return false;
+-        }
+-
+-        return true;
++        return in.matches("[a-zA-Z0-9_\u4e00-\u9fa5]{1,16}");
+     }
+     // Paper end - validate usernames
+ 
+@@ -293,9 +279,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener
+     }
+ 
+     public static boolean isValidUsername(String name) {
+-        return name.chars().filter((i) -> {
+-            return i <= 32 || i >= 127;
+-        }).findAny().isEmpty();
++        return name.matches("[a-zA-Z0-9_\u4e00-\u9fa5]{1,16}");
+     }
+ 
+     @Override
